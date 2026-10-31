@@ -4,6 +4,7 @@ package com.imccontrol.pruebas;
 import com.imccontrol.dao.RegistroIMCDAO;
 import com.imccontrol.model.RegistroIMC;
 import java.sql.SQLException;
+import java.util.List;
 
 public class PruebaRegistroIMCDAO {
 
@@ -22,16 +23,28 @@ public class PruebaRegistroIMCDAO {
             );
 
             RegistroIMCDAO dao = new RegistroIMCDAO();
+             
+List<RegistroIMC> historial =
+        dao.consultarHistorial(idUsuario);
 
-            if (dao.guardarRegistro(registro)) {
-                System.out.println(
-                        "Registro de IMC guardado correctamente");
-                System.out.println(
-                        "IMC calculado: " + registro.getImc());
-            } else {
-                System.out.println(
-                        "No se pudo guardar el registro");
-            }
+System.out.println("=== HISTORIAL DE IMC ===");
+
+for (RegistroIMC registroHistorial : historial) {
+    System.out.println(
+            "Fecha: " + registroHistorial.getFechaRegistro()
+            + " | Peso: " + registroHistorial.getPeso()
+            + " kg | IMC: " + registroHistorial.getImc()
+    );
+}
+//            if (dao.guardarRegistro(registro)) {
+//                System.out.println(
+//                        "Registro de IMC guardado correctamente");
+//                System.out.println(
+//                        "IMC calculado: " + registro.getImc());
+//            } else {
+//                System.out.println(
+//                        "No se pudo guardar el registro");
+//            }
 
         } catch (SQLException |
                  IllegalArgumentException e) {

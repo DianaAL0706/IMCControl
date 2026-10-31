@@ -59,4 +59,12 @@ public class RegistroIMC {
     public LocalDateTime getFechaRegistro() {
         return fechaRegistro;
     }
+    
+    public RegistroIMC(int idRegistro, int idUsuario,
+                   double peso, double estatura,
+                   LocalDateTime fechaRegistro) {
+
+    this(idRegistro, idUsuario, peso, estatura);
+    this.fechaRegistro = fechaRegistro;
+    }
 }
