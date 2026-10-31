@@ -73,4 +73,12 @@ public Usuario(int idUsuario, String nombreCompleto,
     public void setNombreUsuario(String nombreUsuario) {
         this.nombreUsuario = nombreUsuario;
     }
+
+    public String getSexo() {
+        return sexo;
+    }
+
+    public String getContrasenaHash() {
+        return contrasenaHash;
+    }
 }
