@@ -44,11 +44,11 @@ public Usuario(int idUsuario, String nombreCompleto,
     }
 
     public void setEdad(int edad) {
-    if (edad < 15) {
+        if (edad < 2) {
         throw new IllegalArgumentException(
-            "La edad debe ser de al menos 15 años."
-        );
-    }
+             "La edad debe ser de al menos 2 años."
+    );
+}
     this.edad = edad;
 }
 

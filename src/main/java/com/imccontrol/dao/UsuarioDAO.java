@@ -6,6 +6,7 @@ import com.imccontrol.model.Usuario;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.ResultSet;
 
 public class UsuarioDAO {
 
@@ -31,5 +32,51 @@ public class UsuarioDAO {
             return ps.executeUpdate() > 0;
         }
     }
-}
+        public boolean existeNombreUsuario(String nombreUsuario)
+            throws SQLException {
 
+        String sql = "SELECT 1 FROM USUARIOS "
+            + "WHERE NOMBRE_USUARIO = ?";
+
+        try (Connection conexion = ConexionBD.obtenerConexion();
+             PreparedStatement ps = conexion.prepareStatement(sql)) {
+
+         ps.setString(1, nombreUsuario);
+
+        try (ResultSet rs = ps.executeQuery()) {
+            return rs.next();
+        }
+    }
+}
+      
+public Usuario buscarPorNombreUsuario(String nombreUsuario)
+        throws SQLException {
+
+    String sql = "SELECT * FROM USUARIOS "
+            + "WHERE NOMBRE_USUARIO = ?";
+
+    try (Connection conexion = ConexionBD.obtenerConexion();
+         PreparedStatement ps =
+                 conexion.prepareStatement(sql)) {
+
+        ps.setString(1, nombreUsuario);
+
+        try (ResultSet rs = ps.executeQuery()) {
+
+            if (rs.next()) {
+                return new Usuario(
+                        rs.getInt("ID_USUARIO"),
+                        rs.getString("NOMBRE_COMPLETO"),
+                        rs.getInt("EDAD"),
+                        rs.getString("SEXO"),
+                        rs.getDouble("ESTATURA"),
+                        rs.getString("NOMBRE_USUARIO"),
+                        rs.getString("CONTRASENA_HASH")
+                );
+            }
+        }
+    }
+
+    return null;
+}
+}
