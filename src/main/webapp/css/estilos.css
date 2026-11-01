@@ -1,0 +1,156 @@
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f0f7f8;
+    color: #263238;
+}
+
+header {
+    background: linear-gradient(135deg, #1976a3, #26a69a);
+    color: white;
+    text-align: center;
+    padding: 35px 20px;
+}
+
+header h1 {
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+main {
+    max-width: 900px;
+    margin: 60px auto;
+    padding: 0 20px;
+}
+
+section {
+    background-color: white;
+    padding: 45px 30px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+}
+
+section h2 {
+    color: #1976a3;
+}
+
+section p {
+    line-height: 1.7;
+}
+
+button {
+    background-color: #26a69a;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 13px 25px;
+    margin: 10px 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #1976a3;
+}
+
+footer {
+    text-align: center;
+    color: #607d8b;
+    padding: 25px;
+}
+
+/* Formulario de registro */
+
+form {
+    max-width: 450px;
+    margin: 25px auto;
+    text-align: left;
+}
+
+form label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 6px;
+    font-weight: bold;
+    color: #37474f;
+}
+
+form input,
+form select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cfd8dc;
+    border-radius: 8px;
+    font-size: 15px;
+    background-color: white;
+}
+
+form input:focus,
+form select:focus {
+    outline: none;
+    border-color: #26a69a;
+    box-shadow: 0 0 5px rgba(38, 166, 154, 0.3);
+}
+
+form button {
+    display: block;
+    width: 100%;
+    margin: 25px 0 10px;
+}
+
+a {
+    color: #1976a3;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+.boton-enlace {
+    display: inline-block;
+    background-color: #26a69a;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+}
+
+#btnRegistro,
+.boton-enlace {
+    display: inline-block;
+    width: 120px;
+    box-sizing: border-box;
+    padding: 10px 12px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 14px;
+    line-height: 20px;
+}
+.boton-enlace:hover {
+    background-color: #208f85;
+}
+#historialIMC ul {
+    list-style: none;
+    padding: 0;
+    margin: 15px 0;
+}
+
+#historialIMC li {
+    background-color: #f0f7f8;
+    border: 1px solid #d5e5e8;
+    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 10px;
+    text-align: left;
+    line-height: 1.6;
+}
