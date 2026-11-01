@@ -1,0 +1,55 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Prueba REST - Registro</title>
+</head>
+<body>
+
+    <h2>Prueba del servicio de registro</h2>
+
+    <button type="button" onclick="probarRegistro()">
+        Probar servicio REST
+    </button>
+
+    <p id="resultado"></p>
+
+    <script>
+        async function probarRegistro() {
+            const resultado = document.getElementById("resultado");
+
+            try {
+                const respuesta = await fetch(
+                    "api/usuarios/registro",
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            nombre: "Maria Lopez",
+                            edad: 25,
+                            sexo: "Femenino",
+                            estatura: 1.65,
+                            usuario: "maria_prueba",
+                            contrasena: "Prueba123"
+                        })
+                    }
+                );
+
+                const datos = await respuesta.json();
+
+                resultado.textContent =
+                    "HTTP " + respuesta.status +
+                    " - " + JSON.stringify(datos);
+
+            } catch (error) {
+                resultado.textContent =
+                    "Error: " + error.message;
+            }
+        }
+    </script>
+
+</body>
+</html>
