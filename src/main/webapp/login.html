@@ -1,0 +1,88 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <title>IMC Control - Iniciar sesión</title>
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+
+    <header>
+        <h1>IMC Control</h1>
+        <p>Sistema de monitoreo del índice de masa corporal</p>
+    </header>
+
+    <main>
+        <section class="contenedor">
+            <h2>Iniciar sesión</h2>
+            <p>Ingresa tus datos para continuar.</p>
+
+            <form id="formLogin">
+
+                <label for="usuario">Nombre de usuario:</label>
+                <input type="text" id="usuario"
+                       name="usuario" required>
+
+                <label for="contrasena">Contraseña:</label>
+                <input type="password" id="contrasena"
+                       name="contrasena" required>
+
+                <button type="submit">Iniciar sesión</button>
+
+            </form>
+
+            <p id="mensajeLogin" aria-live="polite"></p>
+
+            <p>
+                ¿No tienes una cuenta?
+                <a href="registro.html">Regístrate aquí</a>
+            </p>
+        </section>
+    </main>
+
+    <footer>
+        <p>IMC Control - Sistema de seguimiento personal</p>
+    </footer>
+    <script>
+        const formulario = document.getElementById("formLogin");
+        const mensaje = document.getElementById("mensajeLogin");
+        formulario.addEventListener("submit", async function(evento) {
+    evento.preventDefault();
+
+    mensaje.textContent = "Verificando credenciales...";
+    const datosLogin = {
+        usuario: document.getElementById("usuario").value.trim(),
+        contrasena: document.getElementById("contrasena").value
+};
+
+try {
+    const respuesta = await fetch("api/usuarios/login", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(datosLogin)
+    });
+
+    const resultado = await respuesta.json();
+
+    mensaje.textContent = resultado.mensaje;
+    if (respuesta.ok) {
+    mensaje.style.color = "green";
+
+    window.location.href = "panel.html";
+} else {
+    mensaje.style.color = "red";
+}
+
+} catch (error) {
+    mensaje.textContent = "Error de conexión. Intenta nuevamente.";
+    mensaje.style.color = "red";
+}
+});
+    </script>
+</body>
+</html>
