@@ -13,9 +13,23 @@ import java.util.List;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import javax.ws.rs.core.Context;
+
+import javax.ws.rs.POST;
+import javax.ws.rs.Consumes;
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
+import java.io.StringReader;
+import java.time.LocalDateTime;
 
 @Path("/imc")
 public class IMCResource {
+
+@Context
+private HttpServletRequest request;
 
     @GET
     @Path("/saludo")
@@ -37,7 +51,7 @@ public class IMCResource {
     }
 
     double imc = peso / (estatura * estatura);
-
+       
     return String.format(
             java.util.Locale.US,
             "{\"peso\":%.2f,\"estatura\":%.2f,\"imc\":%.2f}",
@@ -74,6 +88,26 @@ public class IMCResource {
 @Produces(MediaType.APPLICATION_JSON)
 public Response obtenerHistorial(
         @PathParam("idUsuario") int idUsuario) {
+
+HttpSession sesion = request.getSession(false);
+
+if (sesion == null ||
+        sesion.getAttribute("idUsuario") == null) {
+
+    return Response.status(Response.Status.UNAUTHORIZED)
+            .entity("{\"error\":\"Debes iniciar sesión\"}")
+            .build();
+}
+
+int idUsuarioSesion =
+        (Integer) sesion.getAttribute("idUsuario");
+
+if (idUsuarioSesion != idUsuario) {
+
+    return Response.status(Response.Status.FORBIDDEN)
+            .entity("{\"error\":\"No puedes consultar el historial de otro usuario\"}")
+            .build();
+}
 
     if (idUsuario <= 0) {
         return Response.status(Response.Status.BAD_REQUEST)
@@ -127,5 +161,71 @@ public Response obtenerHistorial(
                 .build();
     }
 }
+@POST
+@Path("/guardar")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
+public Response guardarIMC(String datos) {
+    HttpSession sesion = request.getSession(false);
 
+if (sesion == null ||
+        sesion.getAttribute("idUsuario") == null) {
+
+    return Response.status(Response.Status.UNAUTHORIZED)
+            .entity("{\"error\":\"Debes iniciar sesión\"}")
+            .build();
+}
+
+int idUsuario =
+        (Integer) sesion.getAttribute("idUsuario");
+        
+JsonObject json;
+
+try (JsonReader lector = Json.createReader(
+        new StringReader(datos))) {
+
+    json = lector.readObject();
+}
+
+double peso = json.getJsonNumber("peso").doubleValue();
+double estatura = json.getJsonNumber("estatura").doubleValue();
+   
+if (!Double.isFinite(peso) || peso <= 0 ||
+        !Double.isFinite(estatura) || estatura <= 0) {
+
+    return Response.status(Response.Status.BAD_REQUEST)
+            .entity("{\"error\":\"Peso y estatura deben ser mayores a cero\"}")
+            .build();
+}
+
+double imc = peso / (estatura * estatura);
+ 
+RegistroIMC registro = new RegistroIMC(
+        0,
+        idUsuario,
+        peso,
+        estatura,
+        LocalDateTime.now()
+);
+RegistroIMCDAO dao = new RegistroIMCDAO();
+
+boolean guardado;
+
+try {
+    guardado = dao.guardarRegistro(registro);
+} catch (SQLException e) {
+    return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+            .entity("{\"error\":\"No se pudo guardar el registro de IMC\"}")
+            .build();
+}
+if (guardado) {
+    return Response.ok()
+            .entity("{\"mensaje\":\"Registro de IMC guardado correctamente\"}")
+            .build();
+}
+
+return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+        .entity("{\"error\":\"No se pudo guardar el registro de IMC\"}")
+        .build();
+}
 }
