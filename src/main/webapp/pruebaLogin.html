@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Prueba REST - Login</title>
+</head>
+<body>
+
+    <h2>Prueba del servicio de inicio de sesión</h2>
+
+    <button type="button" onclick="probarLogin()">
+        Probar inicio de sesión
+    </button>
+
+    <p id="resultado"></p>
+
+    <script>
+        async function probarLogin() {
+            const resultado = document.getElementById("resultado");
+
+            try {
+                const respuesta = await fetch("api/usuarios/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        usuario: "ana-prueba",
+                        contrasena: "Incorrecta123"
+                    })
+                });
+
+                const datos = await respuesta.json();
+
+                resultado.textContent =
+                    "HTTP " + respuesta.status +
+                    " - " + JSON.stringify(datos);
+
+            } catch (error) {
+                resultado.textContent =
+                    "Error: " + error.message;
+            }
+        }
+    </script>
+
+</body>
+</html>
